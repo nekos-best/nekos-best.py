@@ -1,9 +1,8 @@
 # nekos-best.py
 
-A simple async Python wrapper for nekos.best API.
+A simple async Python wrapper for [nekos.best](https://nekos.best) API.
 
-> Supported categories are: cuddle, feed, hug, kiss, nekos, pat, poke, slap and tickle.<br>
-> See <https://nekos.best/endpoints> for all endpoints.
+Join the official Discord server [here](https://discord.gg/2NsE7akmM5).
 
 ## Requirements
 
@@ -32,5 +31,5 @@ async def main(category: str):
     await client.teardown()  # Cleanup http client.
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main("nekos"))
+loop.run_until_complete(main("nekos"))  # https://nekos.best/nekos/0001.png
 ```

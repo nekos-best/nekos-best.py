@@ -19,20 +19,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from enum import Enum
 
 
-class Categories(Enum):
-    cuddle = "cuddle"
-    feed = "feed"
-    hug = "hug"
-    kiss = "kiss"
-    nekos = "nekos"
-    pat = "pat"
-    poke = "poke"
-    slap = "slap"
-    tickle = "tickle"
-
-    @classmethod
-    def has_value(cls, value: str):
-        return value in cls.__members__
+CATEGORIES = (
+    "baka",
+    "cry",
+    "cuddle",
+    "dance",
+    "feed",
+    "hug",
+    "kiss",
+    "laugh",
+    "nekos",
+    "pat",
+    "poke",
+    "slap",
+    "smile",
+    "smug",
+    "tickle",
+    "wave",
+)
 
 
 class Result:

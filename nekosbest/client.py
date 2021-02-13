@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .http import HttpClient
-from .models import Categories, Result
+from .models import CATEGORIES, Result
 
 
 class Client:
@@ -49,7 +49,7 @@ class Client:
         -------
         nekosbest.Result
         """
-        if not Categories.has_value(category):
+        if not category in CATEGORIES:
             raise TypeError("This isn't a valid category.")
 
         result = await self.http.get(category)
