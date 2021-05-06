@@ -16,24 +16,30 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import platform
+
 import aiohttp
+from nekosbest import __version__
 
 from .errors import APIError, ClientError, NotFound
 
 BASE_URL = "https://nekos.best"
+DEFAULT_HEADERS = {
+    "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
+}
 
 
 class HttpClient:
-    def __init__(self):
-        self.session = aiohttp.ClientSession()
-
-    async def get(self, endpoint: str, **kwargs):
+    async def get(self, endpoint: str, amount: int, **kwargs) -> dict:
         try:
-            async with self.session.get(f"{BASE_URL}/{endpoint}") as resp:
-                if resp.status == 404:
-                    raise NotFound()
-                if resp.status != 200:
-                    raise APIError(resp.status)
-                return await resp.json(content_type=None)
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"{BASE_URL}/{endpoint}", params={"amount": amount}, headers=DEFAULT_HEADERS
+                ) as resp:
+                    if resp.status == 404:
+                        raise NotFound()
+                    if resp.status != 200:
+                        raise APIError(resp.status)
+                    return await resp.json(content_type=None)
         except aiohttp.ClientConnectionError:
             raise ClientError()

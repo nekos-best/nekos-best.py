@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from enum import Enum
-
+from typing import List, Optional, Union
 
 CATEGORIES = (
     "baka",
@@ -40,5 +40,16 @@ CATEGORIES = (
 
 
 class Result:
+    """Represents a response from the API.
+    
+    Attributes
+    ----------
+    url: Optional[Union[str, List[str]]]
+        The image(s) url(s).
+    """
+
     def __init__(self, data: dict):
-        self.url = data.get("url")
+        self.url: Optional[Union[str, List[str]]] = data.get("url")
+
+    def __repr__(self) -> str:
+        return f"<Result url={self.url}>"

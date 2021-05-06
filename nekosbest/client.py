@@ -26,31 +26,27 @@ class Client:
     def __init__(self):
         self.http = HttpClient()
 
-    async def teardown(self):
+    async def get_image(self, category: str, amount: int = 1) -> Result:
         """
         |coro|
-        
-        A function to cleanup our http session.
-        """
-        await self.http.session.close()
 
-    async def get_image(self, category: str) -> Result:
-        """
-        |coro|
-        
         Returns an image URL of a specific category.
 
         Parameters
         ----------
         category: str
             The category of image you want to get.
-        
+        amount: int
+            The amount of images. Must be between 1 and 20.
+
         Returns
         -------
         nekosbest.Result
         """
         if not category in CATEGORIES:
-            raise TypeError("This isn't a valid category.")
+            raise ValueError("This isn't a valid category.")
+        if not 1 <= amount <= 20:
+            raise ValueError("Amount parameter must be between 1 and 20.")
 
-        result = await self.http.get(category)
+        result = await self.http.get(category, amount)
         return Result(result)
