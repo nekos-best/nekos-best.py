@@ -2,7 +2,7 @@
 
 A simple async Python wrapper for [nekos.best](https://nekos.best) API.
 
-Join the official Discord server [here](https://discord.gg/2NsE7akmM5).
+Join the official Discord server [here](https://nekos.best/discord).
 
 ## Requirements
 
