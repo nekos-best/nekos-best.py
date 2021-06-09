@@ -1,5 +1,7 @@
 # nekos-best.py
 
+[![PyPI](https://img.shields.io/pypi/v/nekosbest?style=flat-square)](https://pypi.org/project/nekosbest)
+
 A simple async Python wrapper for [nekos.best](https://nekos.best) API.
 
 Join the official Discord server [here](https://nekos.best/discord?ref=py).
