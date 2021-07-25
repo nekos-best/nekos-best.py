@@ -16,8 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Union
+
 from .http import HttpClient
-from .models import CATEGORIES, Result
+from .models import CATEGORIES, Result, Results
 
 
 class Client:
@@ -26,7 +28,7 @@ class Client:
     def __init__(self):
         self.http = HttpClient()
 
-    async def get_image(self, category: str, amount: int = 1) -> Result:
+    async def get_image(self, category: str, amount: int = 1) -> Union[Result, Results]:
         """
         |coro|
 
@@ -41,12 +43,12 @@ class Client:
 
         Returns
         -------
-        nekosbest.Result
+        Union[nekosbestResult, nekosbest.Results]
         """
         if not category in CATEGORIES:
             raise ValueError("This isn't a valid category.")
         if not 1 <= amount <= 20:
             raise ValueError("Amount parameter must be between 1 and 20.")
 
-        result = await self.http.get(category, amount)
-        return Result(result)
+        data = await self.http.get(category, amount)
+        return Result(data) if amount == 1 else Results(data)

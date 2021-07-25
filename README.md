@@ -15,7 +15,7 @@ Join the official Discord server [here](https://nekos.best/discord?ref=py).
 Make sure to have pip installed in your environement. It will also install all requirements.
 
 ```bash
-pip install nekosbest
+pip install -U nekosbest
 ```
 
 ## Example
@@ -39,9 +39,9 @@ async def get_multiple_images(category: str, amount: int):
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(get_single_image("nekos"))
-# <Result url=https://nekos.best/nekos/0162.png>
+# <Result url=https://nekos.best/nekos/0338.png source_details=<SourceDetails artist_href=https://www.pixiv.net/en/users/28136401 artist_name=PiAn source_url=https://www.pixiv.net/en/artworks/91363666>>
 loop.run_until_complete(get_multiple_images("nekos", 5))
-# <Result url=['https://nekos.best/nekos/0277.png', 'https://nekos.best/nekos/0339.png', 'https://nekos.best/nekos/0391.png', 'https://nekos.best/nekos/0245.png', 'https://nekos.best/nekos/0225.png']>
+# <Results url=['https://nekos.best/nekos/0351.png', 'https://nekos.best/nekos/0442.png', 'https://nekos.best/nekos/0436.png', 'https://nekos.best/nekos/0307.png', 'https://nekos.best/nekos/0009.png'] source_details=[<SourceDetails artist_href=https://www.pixiv.net/en/users/7331947 artist_name=xoaiu source_url=https://www.pixiv.net/en/artworks/87593460>, <SourceDetails artist_href=https://www.pixiv.net/en/users/37889769 artist_name=タン塩 source_url=https://www.pixiv.net/en/artworks/89459198>, <SourceDetails artist_href=https://www.pixiv.net/en/users/38808847 artist_name=Elliot source_url=https://www.pixiv.net/en/artworks/89283107>, <SourceDetails artist_href=https://www.pixiv.net/en/users/43296648 artist_name=楠シノ source_url=https://www.pixiv.net/en/artworks/86584286>, <SourceDetails artist_href=https://www.pixiv.net/en/users/32933178 artist_name=しずりゆき source_url=https://www.pixiv.net/artworks/85664088>]>
 ```
 
 ## Migrate from 0.x.x to 1.0.0
