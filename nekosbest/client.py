@@ -46,7 +46,9 @@ class Client:
         Union[nekosbest.Result, nekosbest.Results]
         """
         if not category in CATEGORIES:
-            raise ValueError("This isn't a valid category.")
+            raise ValueError(
+                f"This isn't a valid category. It must be one of the following: {', '.join(CATEGORIES)}."
+            )
         if not 1 <= amount <= 20:
             raise ValueError("Amount parameter must be between 1 and 20.")
 
