@@ -23,7 +23,8 @@ from nekosbest import __version__
 
 from .errors import APIError, ClientError, NotFound
 
-BASE_URL = "https://nekos.best"
+BASE_URL = "https://nekos.best/api"
+API_VERSION = "v1"
 DEFAULT_HEADERS = {
     "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
 }
@@ -34,7 +35,9 @@ class HttpClient:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{BASE_URL}/{endpoint}", params={"amount": amount}, headers=DEFAULT_HEADERS
+                    f"{BASE_URL}/{API_VERSION}/{endpoint}",
+                    params={"amount": amount} if amount > 1 else {},
+                    headers=DEFAULT_HEADERS,
                 ) as resp:
                     if resp.status == 404:
                         raise NotFound()
