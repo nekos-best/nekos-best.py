@@ -43,7 +43,7 @@ class Client:
 
         Returns
         -------
-        Union[nekosbestResult, nekosbest.Results]
+        Union[nekosbest.Result, nekosbest.Results]
         """
         if not category in CATEGORIES:
             raise ValueError("This isn't a valid category.")
