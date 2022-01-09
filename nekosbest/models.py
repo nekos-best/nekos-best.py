@@ -64,6 +64,8 @@ class Result:
         The artist's name.
     source_url: Optional[str]
         The original link of this image.
+    anime_name: Optional[str]
+        The name of the anime this image / gif was taken from.
     """
 
     def __init__(self, data: dict):
@@ -71,6 +73,7 @@ class Result:
         self.artist_href: Optional[str] = data.get("artist_href")
         self.artist_name: Optional[str] = data.get("artist_name")
         self.source_url: Optional[str] = data.get("source_url")
+        self.anime_name: Optional[str] = data.get("anime_name")
 
     def __repr__(self) -> str:
         return f"<Result url={self.url} artist_href={self.artist_href} artist_name={self.artist_name} source_url={self.source_url}>"
