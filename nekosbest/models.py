@@ -57,7 +57,7 @@ class Result:
     Attributes
     ----------
     url: Optional[str]
-        The image url.
+        The image / gif url.
     artist_href: Optional[str]
         The artist's page URL.
     artist_name: Optional[str]
@@ -65,7 +65,7 @@ class Result:
     source_url: Optional[str]
         The original link of this image.
     anime_name: Optional[str]
-        The name of the anime this image / gif was taken from.
+        The englified name of the anime the gif was taken from.
     """
 
     def __init__(self, data: dict):
