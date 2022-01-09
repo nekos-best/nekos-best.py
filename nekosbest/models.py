@@ -76,4 +76,4 @@ class Result:
         self.anime_name: Optional[str] = data.get("anime_name")
 
     def __repr__(self) -> str:
-        return f"<Result url={self.url} artist_href={self.artist_href} artist_name={self.artist_name} source_url={self.source_url}>"
+        return f"<Result url={self.url} artist_href={self.artist_href} artist_name={self.artist_name} source_url={self.source_url} anime_name={self.anime_name}>"
