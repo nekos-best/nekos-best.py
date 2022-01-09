@@ -22,13 +22,14 @@ pip install -U nekosbest
 
 ```py
 import asyncio
+from typing import Union
 
-from nekosbest import Client
+from nekosbest import Client, Result
 
 client = Client()
 
 
-async def get_img(type: str, amount: int = 1):
+async def get_img(type: str, amount: int = 1) -> Union[Result, list(Result)]:
     result = await client.get_image(type, amount)
     print(result)
 
