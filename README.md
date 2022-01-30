@@ -22,26 +22,24 @@ pip install -U nekosbest
 
 ```py
 import asyncio
-from nekosbest import Client
+from typing import Union
+
+from nekosbest import Client, Result
 
 client = Client()
 
 
-async def get_single_image(category: str):
-    result = await client.get_image(category)
+async def get_img(type: str, amount: int = 1) -> Union[Result, list[Result]]:
+    result = await client.get_image(type, amount)
     print(result)
-
-
-async def get_multiple_images(category: str, amount: int):
-    result = await client.get_image(category, amount)
-    print(result)
-
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(get_single_image("nekos"))
-# <Result url=https://nekos.best/nekos/0338.png source_details=<SourceDetails artist_href=https://www.pixiv.net/en/users/28136401 artist_name=PiAn source_url=https://www.pixiv.net/en/artworks/91363666>>
-loop.run_until_complete(get_multiple_images("nekos", 5))
-# <Results url=['https://nekos.best/nekos/0351.png', 'https://nekos.best/nekos/0442.png', 'https://nekos.best/nekos/0436.png', 'https://nekos.best/nekos/0307.png', 'https://nekos.best/nekos/0009.png'] source_details=[<SourceDetails artist_href=https://www.pixiv.net/en/users/7331947 artist_name=xoaiu source_url=https://www.pixiv.net/en/artworks/87593460>, <SourceDetails artist_href=https://www.pixiv.net/en/users/37889769 artist_name=タン塩 source_url=https://www.pixiv.net/en/artworks/89459198>, <SourceDetails artist_href=https://www.pixiv.net/en/users/38808847 artist_name=Elliot source_url=https://www.pixiv.net/en/artworks/89283107>, <SourceDetails artist_href=https://www.pixiv.net/en/users/43296648 artist_name=楠シノ source_url=https://www.pixiv.net/en/artworks/86584286>, <SourceDetails artist_href=https://www.pixiv.net/en/users/32933178 artist_name=しずりゆき source_url=https://www.pixiv.net/artworks/85664088>]>
+
+loop.run_until_complete(get_img("nekos"))
+# <Result url=https://nekos.best/api/v1/nekos/0356.jpg artist_href=https://www.pixiv.net/en/users/38378485 artist_name=奥馬 source_url=https://www.pixiv.net/en/artworks/88188062>
+loop.run_until_complete(get_img("nekos", 2))
+# [<Result url=https://nekos.best/api/v1/nekos/0072.jpg artist_href=https://www.pixiv.net/en/users/12191 artist_name=こみやひとま source_url=https://www.pixiv.net/en/artworks/66834141>, <Result url=https://nekos.best/api/v1/nekos/0215.jpg artist_href=https://www.pixiv.net/en/users/3684923 artist_name=ひゅらさん source_url=https://www.pixiv.net/en/artworks/79697176>]
+
 ```
 
 ## Breaking changes
