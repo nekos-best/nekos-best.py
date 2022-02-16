@@ -16,15 +16,20 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "1.1.5a"
-__author__ = "PredaaA"
-__copyright__ = "Copyright 2021-present PredaaA"
+from typing import List, TypedDict, Union
 
 
-from .client import Client as Client
-from .errors import (
-    APIError as APIError,
-    NekosBestBaseError as NekosBestBaseError,
-    NotFound as NotFound,
-)
-from .models import Result as Result
+class RandomGifsType(TypedDict):
+    anime_name: str
+    url: str
+
+
+class NekoType(TypedDict):
+    artist_href: str
+    artist_name: str
+    source_url: str
+    url: str
+
+
+class ResultType(TypedDict):
+    results: List[Union[NekoType, RandomGifsType]]
