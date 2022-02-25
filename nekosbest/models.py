@@ -54,6 +54,7 @@ CATEGORIES = (
     "tickle",
     "wave",
     "wink",
+    "kitsune",
 )
 
 
