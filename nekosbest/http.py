@@ -16,28 +16,34 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from __future__ import annotations
+
 import platform
+from typing import TYPE_CHECKING
 
 import aiohttp
+
 from nekosbest import __version__
 
 from .errors import APIError, ClientError, NotFound
 
-BASE_URL = "https://nekos.best/api"
-API_VERSION = "v1"
-DEFAULT_HEADERS = {
-    "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
-}
+if TYPE_CHECKING:
+    from .types import ResultType
 
 
 class HttpClient:
-    async def get(self, endpoint: str, amount: int, **kwargs) -> dict:
+    BASE_URL = "https://nekos.best/api/v2"
+    DEFAULT_HEADERS = {
+        "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
+    }
+
+    async def get(self, endpoint: str, amount: int, **kwargs) -> ResultType:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{BASE_URL}/{API_VERSION}/{endpoint}",
+                    f"{self.BASE_URL}/{endpoint}",
                     params={"amount": amount} if amount > 1 else {},
-                    headers=DEFAULT_HEADERS,
+                    headers=self.DEFAULT_HEADERS,
                 ) as resp:
                     if resp.status == 404:
                         raise NotFound()

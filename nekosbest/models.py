@@ -16,7 +16,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
+
+if TYPE_CHECKING:
+    from .types import ResultType
 
 CATEGORIES = (
     "baka",
@@ -33,7 +39,7 @@ CATEGORIES = (
     "hug",
     "kiss",
     "laugh",
-    "nekos",
+    "neko",
     "pat",
     "poke",
     "pout",
@@ -48,6 +54,7 @@ CATEGORIES = (
     "tickle",
     "wave",
     "wink",
+    "kitsune",
 )
 
 
@@ -57,7 +64,7 @@ class Result:
     Attributes
     ----------
     url: Optional[str]
-        The image / gif url.
+        The image / gif URL.
     artist_href: Optional[str]
         The artist's page URL.
     artist_name: Optional[str]
@@ -68,12 +75,15 @@ class Result:
         The englified name of the anime the gif was taken from.
     """
 
-    def __init__(self, data: dict):
+    __slots__ = ("url", "artist_href", "artist_name", "source_url", "anime_name", "_data")
+
+    def __init__(self, data: ResultType):
         self.url: Optional[str] = data.get("url")
         self.artist_href: Optional[str] = data.get("artist_href")
         self.artist_name: Optional[str] = data.get("artist_name")
         self.source_url: Optional[str] = data.get("source_url")
         self.anime_name: Optional[str] = data.get("anime_name")
+        self._data: ResultType = data
 
     def __repr__(self) -> str:
         return f"<Result url={self.url} artist_href={self.artist_href} artist_name={self.artist_name} source_url={self.source_url} anime_name={self.anime_name}>"

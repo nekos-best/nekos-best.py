@@ -28,7 +28,7 @@ class Client:
     def __init__(self):
         self.http = HttpClient()
 
-    async def get_image(self, category: str, amount: int = 1) -> Union[Result, List[Result]]:
+    async def get_image(self, category: str, amount: int = 1) -> List[Result]:
         """
         |coro|
 
@@ -43,7 +43,7 @@ class Client:
 
         Returns
         -------
-        Union[nekosbest.Result, List[nekosbest.Result]]
+        List[Result]
         """
         if not category in CATEGORIES:
             raise ValueError(
@@ -53,4 +53,4 @@ class Client:
             raise ValueError("Amount parameter must be between 1 and 20.")
 
         data = await self.http.get(category, amount)
-        return Result(data) if amount == 1 else [Result(r) for r in data["url"]]
+        return Result(data) if amount == 1 else [Result(r) for r in data["results"]]
