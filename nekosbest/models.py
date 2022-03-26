@@ -55,6 +55,7 @@ CATEGORIES = (
     "wave",
     "wink",
     "kitsune",
+    "waifu",
 )
 
 
