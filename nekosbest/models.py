@@ -56,6 +56,10 @@ CATEGORIES = (
     "wink",
     "kitsune",
     "waifu",
+    "handhold",
+    "kick",
+    "punch",
+    "shoot",
 )
 
 
