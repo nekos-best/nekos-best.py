@@ -53,4 +53,4 @@ class Client:
             raise ValueError("Amount parameter must be between 1 and 20.")
 
         data = await self.http.get(category, amount)
-        return Result(data) if amount == 1 else [Result(r) for r in data["results"]]
+        return Result(data["results"][0]) if amount == 1 else [Result(r) for r in data["results"]]
