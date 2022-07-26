@@ -60,6 +60,8 @@ CATEGORIES = (
     "kick",
     "punch",
     "shoot",
+    "husbando",
+    "yeet",
 )
 
 
