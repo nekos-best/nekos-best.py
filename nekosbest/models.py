@@ -62,6 +62,9 @@ CATEGORIES = (
     "shoot",
     "husbando",
     "yeet",
+    "nod",
+    "nom",
+    "nope"
 )
 
 
