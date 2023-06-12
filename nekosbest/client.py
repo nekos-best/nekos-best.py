@@ -16,41 +16,73 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import List, Union
+from typing import List, Optional
 
+from .errors import InvalidAmount, UnknownCategory
 from .http import HttpClient
-from .models import CATEGORIES, Result
+from .models import Categories, CategoryEndpoint, Result
+
+# TODO: Add Ruff
 
 
 class Client:
     """Client to make requests to nekos.best API."""
 
-    def __init__(self):
-        self.http = HttpClient()
+    def __init__(self) -> None:
+        self.http: HttpClient = HttpClient()
 
-    async def get_image(self, category: str, amount: int = 1) -> List[Result]:
-        """
-        |coro|
+    async def close(self) -> None:
+        """Closes the client."""
+        await self.http.session.close()
 
-        Returns an image URL of a specific category.
+    async def fetch(self, category: Optional[Categories] = None, amount: int = 1) -> List[Result]:
+        """Returns one or multiple images URLs of a specific category along with their metadata.
 
         Parameters
         ----------
-        category: str
+        category: Optional[Categories]
             The category of image you want to get.
+            If not specified, it will return a random image.
+            Defaults to None which therefore will be a random image.
         amount: int
             The amount of images. Must be between 1 and 20.
+            Defaults to 1.
 
         Returns
         -------
         List[Result]
         """
-        if not category in CATEGORIES:
-            raise ValueError(
-                f"This isn't a valid category. It must be one of the following: {', '.join(CATEGORIES)}."
+        if category is None:
+            category = Categories.random()
+
+        if not Categories.is_valid(category):
+            raise UnknownCategory(
+                f"This isn't a valid category. It must be one of the following: {', '.join(Categories.__members__)}."
             )
         if not 1 <= amount <= 20:
-            raise ValueError("Amount parameter must be between 1 and 20.")
+            raise InvalidAmount("Amount parameter must be between 1 and 20.")
 
-        data = await self.http.get(category, amount)
-        return Result(data["results"][0]) if amount == 1 else [Result(r) for r in data["results"]]
+        endpoint = CategoryEndpoint(category, amount)
+        response = await self.http.get_results(endpoint)
+        return [Result(result) for result in response["results"]]
+
+    async def fetch_file(
+        self, category: Optional[Categories] = None, amount: int = 1
+    ) -> List[Result]:
+        """Returns one or multiple images bytes of a specific category along with their metadata.
+
+        Parameters
+        ----------
+        category: Optional[Categories]
+            The category of image you want to get.
+            If not specified, it will return a random image.
+            Defaults to None which therefore will be a random image.
+        amount: int
+            The amount of images. Must be between 1 and 20.
+            Defaults to 1.
+
+        Returns
+        -------
+        List[Result]
+        """
+        # TODO

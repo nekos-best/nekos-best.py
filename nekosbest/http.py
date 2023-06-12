@@ -26,29 +26,43 @@ import aiohttp
 from nekosbest import __version__
 
 from .errors import APIError, ClientError, NotFound
+from .models import CategoryEndpoint, SearchEndpoint
 
 if TYPE_CHECKING:
     from .types import ResultType
 
 
 class HttpClient:
-    BASE_URL = "https://nekos.best/api/v2"
-    DEFAULT_HEADERS = {
-        "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
-    }
+    def __init__(self) -> None:
+        self.session: aiohttp.ClientSession = aiohttp.ClientSession(
+            headers={
+                "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
+            }
+        )
 
-    async def get(self, endpoint: str, amount: int, **kwargs) -> ResultType:
+    async def get_results(self, endpoint: CategoryEndpoint) -> ResultType:
         try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"{self.BASE_URL}/{endpoint}",
-                    params={"amount": amount} if amount > 1 else {},
-                    headers=self.DEFAULT_HEADERS,
-                ) as resp:
-                    if resp.status == 404:
-                        raise NotFound()
-                    if resp.status != 200:
-                        raise APIError(resp.status)
-                    return await resp.json(content_type=None)
+            async with self.session.get(endpoint.formatted) as resp:
+                if resp.status == 404:
+                    raise NotFound
+                if resp.status != 200:
+                    raise APIError(resp.status)
+
+                return await resp.json()
         except aiohttp.ClientConnectionError:
-            raise ClientError()
+            raise ClientError
+
+    async def get_search_results(self, endpoint: SearchEndpoint) -> ResultType:
+        ...
+        # TODO
+
+    async def get_file(self, image_url: str) -> bytes:
+        # Add a idiot proof check here
+        try:
+            async with self.session.get(image_url) as resp:
+                if resp.status != 200:
+                    raise APIError(resp.status)
+
+                return await resp.read()
+        except aiohttp.ClientConnectionError:
+            raise ClientError
