@@ -19,12 +19,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List, TypedDict, Union
 
 
-class RandomGifsType(TypedDict):
+class GifsType(TypedDict):
     anime_name: str
     url: str
 
 
-class NekoType(TypedDict):
+class ImagesType(TypedDict):
     artist_href: str
     artist_name: str
     source_url: str
@@ -32,4 +32,4 @@ class NekoType(TypedDict):
 
 
 class ResultType(TypedDict):
-    results: List[Union[NekoType, RandomGifsType]]
+    results: List[Union[ImagesType, GifsType]]

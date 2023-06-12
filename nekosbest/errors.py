@@ -21,6 +21,14 @@ class NekosBestBaseError(Exception):
     """Base error of nekosbest client."""
 
 
+class UnknownCategory(NekosBestBaseError):
+    """Raised when an unknown category is passed."""
+
+
+class InvalidAmount(NekosBestBaseError):
+    """Raised when an invalid amount is passed."""
+
+
 class NotFound(NekosBestBaseError):
     """Raised when API returns a 404."""
 
