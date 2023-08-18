@@ -64,7 +64,11 @@ CATEGORIES = (
     "yeet",
     "nod",
     "nom",
-    "nope"
+    "nope",
+    "handshake",
+    "lurk",
+    "peck",
+    "yawn",
 )
 
 
