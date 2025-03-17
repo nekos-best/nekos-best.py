@@ -69,6 +69,8 @@ CATEGORIES = (
     "lurk",
     "peck",
     "yawn",
+    "angry",
+    "run",
 )
 
 
