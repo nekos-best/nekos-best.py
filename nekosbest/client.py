@@ -28,7 +28,16 @@ class Client:
     def __init__(self):
         self.http = HttpClient()
 
-    async def get_image(self, category: str, amount: int = 1) -> List[Result]:
+    async def close(self):
+        await self.http.close()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
+    async def get_image(self, category: str, amount: int = 1) -> Union[Result, List[Result]]:
         """
         |coro|
 

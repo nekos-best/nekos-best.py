@@ -26,10 +26,11 @@ class NotFound(NekosBestBaseError):
 
 
 class APIError(NekosBestBaseError):
-    """Raised when API returns an unexcepted status code."""
+    """Raised when API returns an unexpected status code."""
 
     def __init__(self, code: int = None):
         self.code = code
+        super().__init__(f"API returned an unexpected status code: {code}")
 
 
 class ClientError(NekosBestBaseError):

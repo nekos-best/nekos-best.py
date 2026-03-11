@@ -42,6 +42,28 @@ loop.run_until_complete(get_img("nekos", 2))
 
 ```
 
+The previous example may yield a warning because we didn't close the client session explicitly.
+
+Here is the recommended usage:
+
+```py
+import asyncio
+from nekosbest import Client
+
+async def main():
+    async with Client() as client:
+        # Get a single nyan
+        single_result = await client.get_image("nekos")
+        print(single_result)
+        
+        # Get two nyans
+        multi_result = await client.get_image("nekos", 2)
+        print(multi_result)
+
+asyncio.run(main())
+```
+
+
 ## Breaking changes
 
 ### Migrate from 0.x.x to 1.0.0
