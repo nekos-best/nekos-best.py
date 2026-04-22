@@ -28,6 +28,15 @@ class Client:
     def __init__(self):
         self.http = HttpClient()
 
+    async def __aenter__(self) -> "Client":
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb) -> None:
+        await self.close()
+
+    async def close(self) -> None:
+        await self.http.close()
+
     async def get_image(self, category: str, amount: int = 1) -> List[Result]:
         """
         |coro|
