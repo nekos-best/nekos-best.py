@@ -18,8 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 
-import platform
-from typing import TYPE_CHECKING
+import sys
+from typing import TYPE_CHECKING, Optional
 
 import aiohttp
 
@@ -31,24 +31,39 @@ if TYPE_CHECKING:
     from .types import ResultType
 
 
+_PYTHON_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}"
+
+
 class HttpClient:
     BASE_URL = "https://nekos.best/api/v2"
     DEFAULT_HEADERS = {
-        "User-Agent": f"nekosbest.py v{__version__} (Python/{(platform.python_version())[:3]} aiohttp/{aiohttp.__version__})"
+        "User-Agent": (
+            f"nekosbest.py v{__version__} "
+            f"(Python/{_PYTHON_VERSION} aiohttp/{aiohttp.__version__})"
+        )
     }
 
-    async def get(self, endpoint: str, amount: int, **kwargs) -> ResultType:
+    def __init__(self) -> None:
+        self.session: Optional[aiohttp.ClientSession] = None
+
+    async def close(self) -> None:
+        if self.session is not None and not self.session.closed:
+            await self.session.close()
+
+    async def get(self, endpoint: str, amount: int, **kwargs) -> "ResultType":
+        if self.session is None or self.session.closed:
+            self.session = aiohttp.ClientSession()
+
         try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"{self.BASE_URL}/{endpoint}",
-                    params={"amount": amount} if amount > 1 else {},
-                    headers=self.DEFAULT_HEADERS,
-                ) as resp:
-                    if resp.status == 404:
-                        raise NotFound()
-                    if resp.status != 200:
-                        raise APIError(resp.status)
-                    return await resp.json(content_type=None)
-        except aiohttp.ClientConnectionError:
-            raise ClientError()
+            async with self.session.get(
+                f"{self.BASE_URL}/{endpoint}",
+                params={"amount": amount} if amount > 1 else {},
+                headers=self.DEFAULT_HEADERS,
+            ) as resp:
+                if resp.status == 404:
+                    raise NotFound()
+                if resp.status != 200:
+                    raise APIError(resp.status)
+                return await resp.json(content_type=None)
+        except aiohttp.ClientConnectionError as underlying:
+            raise ClientError("Failed to connect to nekos.best API.") from underlying
