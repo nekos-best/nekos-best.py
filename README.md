@@ -22,24 +22,68 @@ pip install -U nekosbest
 
 ```py
 import asyncio
-from typing import Union
 
-from nekosbest import Client, Result
-
-client = Client()
+from nekosbest import Client
 
 
-async def get_img(type: str, amount: int = 1) -> Union[Result, list[Result]]:
-    result = await client.get_image(type, amount)
-    print(result)
+async def main() -> None:
+    client = Client()
+    try:
+        single = await client.get_image("neko")
+        print(single)
+        multiple = await client.get_image("neko", 3)
+        print(multiple)
+    finally:
+        await client.close()
 
-loop = asyncio.get_event_loop()
 
-loop.run_until_complete(get_img("nekos"))
-# <Result url=https://nekos.best/api/v1/nekos/0356.jpg artist_href=https://www.pixiv.net/en/users/38378485 artist_name=奥馬 source_url=https://www.pixiv.net/en/artworks/88188062>
-loop.run_until_complete(get_img("nekos", 2))
-# [<Result url=https://nekos.best/api/v1/nekos/0072.jpg artist_href=https://www.pixiv.net/en/users/12191 artist_name=こみやひとま source_url=https://www.pixiv.net/en/artworks/66834141>, <Result url=https://nekos.best/api/v1/nekos/0215.jpg artist_href=https://www.pixiv.net/en/users/3684923 artist_name=ひゅらさん source_url=https://www.pixiv.net/en/artworks/79697176>]
+asyncio.run(main())
+```
 
+## Recommended usage
+
+Use `Client` as an async context manager so the underlying HTTP session is always closed cleanly, even if an error is raised:
+
+```py
+import asyncio
+
+from nekosbest import Client
+
+
+async def main() -> None:
+    async with Client() as client:
+        result = await client.get_image("neko")
+        print(result.url)
+        if result.dimensions is not None:
+            print(result.dimensions.width, result.dimensions.height)
+
+
+asyncio.run(main())
+```
+
+## Exception handling
+
+All exceptions raised by the library inherit from `NekosBestBaseError`. The most common ones you may want to catch:
+
+- `NotFound` — the requested category did not exist on the API.
+- `APIError` — the API returned an unexpected non-2xx status. The status code is available on `err.code`.
+- `ClientError` — the HTTP client could not reach the API (DNS failure, timeout, connection reset, ...). The underlying `aiohttp.ClientConnectionError` is preserved on `err.__cause__`.
+
+```py
+from nekosbest import APIError, Client, ClientError, NotFound
+
+
+async def fetch(client: Client, category: str) -> None:
+    try:
+        result = await client.get_image(category)
+    except NotFound:
+        print(f"unknown category: {category}")
+    except APIError as err:
+        print(f"nekos.best returned {err.code}")
+    except ClientError as err:
+        print(f"could not reach nekos.best: {err.__cause__}")
+    else:
+        print(result.url)
 ```
 
 ## Breaking changes
