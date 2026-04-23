@@ -7,6 +7,7 @@ def test_all_contains_expected_names():
         "__author__",
         "__copyright__",
         "Client",
+        "Dimensions",
         "Result",
         "NekosBestBaseError",
         "NotFound",

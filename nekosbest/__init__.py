@@ -28,13 +28,14 @@ from .errors import (
     NekosBestBaseError as NekosBestBaseError,
     NotFound as NotFound,
 )
-from .models import Result as Result
+from .models import Dimensions as Dimensions, Result as Result
 
 __all__ = (
     "__version__",
     "__author__",
     "__copyright__",
     "Client",
+    "Dimensions",
     "Result",
     "NekosBestBaseError",
     "NotFound",

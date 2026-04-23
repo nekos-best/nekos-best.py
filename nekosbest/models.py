@@ -18,11 +18,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional
 
 
 if TYPE_CHECKING:
     from .types import ResultType
+
+
+@dataclass(frozen=True)
+class Dimensions:
+    """Image dimensions in pixels.
+
+    Attributes
+    ----------
+    width: int
+        Image width in pixels.
+    height: int
+        Image height in pixels.
+    """
+
+    width: int
+    height: int
+
 
 CATEGORIES = (
     "angry",
@@ -106,9 +124,11 @@ class Result:
         The original link of this image.
     anime_name: Optional[str]
         The englified name of the anime the gif was taken from.
+    dimensions: Optional[Dimensions]
+        The image dimensions if the API response includes a ``dimensions`` object.
     """
 
-    __slots__ = ("url", "artist_href", "artist_name", "source_url", "anime_name", "_data")
+    __slots__ = ("url", "artist_href", "artist_name", "source_url", "anime_name", "dimensions", "_data")
 
     def __init__(self, data: ResultType):
         self.url: Optional[str] = data.get("url")
@@ -116,7 +136,17 @@ class Result:
         self.artist_name: Optional[str] = data.get("artist_name")
         self.source_url: Optional[str] = data.get("source_url")
         self.anime_name: Optional[str] = data.get("anime_name")
+        dimensions = data.get("dimensions")
+        self.dimensions: Optional[Dimensions] = (
+            Dimensions(width=dimensions["width"], height=dimensions["height"])
+            if isinstance(dimensions, dict) and "width" in dimensions and "height" in dimensions
+            else None
+        )
         self._data: ResultType = data
 
     def __repr__(self) -> str:
-        return f"<Result url={self.url} artist_href={self.artist_href} artist_name={self.artist_name} source_url={self.source_url} anime_name={self.anime_name}>"
+        return (
+            f"<Result url={self.url} artist_href={self.artist_href} "
+            f"artist_name={self.artist_name} source_url={self.source_url} "
+            f"anime_name={self.anime_name} dimensions={self.dimensions}>"
+        )

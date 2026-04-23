@@ -19,9 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from typing import List, TypedDict, Union
 
 
+class DimensionsType(TypedDict):
+    width: int
+    height: int
+
+
 class RandomGifsType(TypedDict):
     anime_name: str
     url: str
+    dimensions: DimensionsType
 
 
 class NekoType(TypedDict):
@@ -29,6 +35,7 @@ class NekoType(TypedDict):
     artist_name: str
     source_url: str
     url: str
+    dimensions: DimensionsType
 
 
 class ResultType(TypedDict):
