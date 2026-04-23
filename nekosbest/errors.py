@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Optional
+
 
 class NekosBestBaseError(Exception):
     """Base error of nekosbest client."""
@@ -28,7 +30,11 @@ class NotFound(NekosBestBaseError):
 class APIError(NekosBestBaseError):
     """Raised when API returns an unexcepted status code."""
 
-    def __init__(self, code: int = None):
+    def __init__(self, code: Optional[int] = None) -> None:
+        if code is not None:
+            super().__init__(f"nekos.best API returned unexpected status code {code}.")
+        else:
+            super().__init__("nekos.best API returned an unexpected status code.")
         self.code = code
 
 
