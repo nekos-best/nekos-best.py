@@ -24,7 +24,20 @@ __copyright__ = "Copyright 2021-present PredaaA"
 from .client import Client as Client
 from .errors import (
     APIError as APIError,
+    ClientError as ClientError,
     NekosBestBaseError as NekosBestBaseError,
     NotFound as NotFound,
 )
 from .models import Result as Result
+
+__all__ = (
+    "__version__",
+    "__author__",
+    "__copyright__",
+    "Client",
+    "Result",
+    "NekosBestBaseError",
+    "NotFound",
+    "APIError",
+    "ClientError",
+)

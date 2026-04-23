@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import List, Union
+from typing import List
 
 from .http import HttpClient
 from .models import CATEGORIES, Result
