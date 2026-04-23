@@ -86,13 +86,7 @@ async def fetch(client: Client, category: str) -> None:
         print(result.url)
 ```
 
-## Breaking changes
+## Changelog
 
-### Migrate from 0.x.x to 1.0.0
-
-`Client.teardown` has been removed, it is no longer needed to pass it when closing.
-
-### Migrate from 1.0.20 to 1.1.0
-
-`nekosbest.Result.source_details` has been removed. Source details are now in `Result`.  
-And therefore, `nekosbest.Results` and `nekosbest.SourceDetails` got removed too.
+See [CHANGELOG.md](CHANGELOG.md) for the full release history, including
+migration notes for every breaking change.
